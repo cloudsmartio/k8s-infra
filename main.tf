@@ -41,6 +41,15 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 
   node_count = 1
 
+  # Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage.
+  autoscaling {
+    # Minimum number of nodes in the NodePool. Must be >=0 and <= max_node_count.
+    min_node_count = 1
+
+    # Maximum number of nodes in the NodePool. Must be >= min_node_count.
+    max_node_count = 3
+  }
+
   # pin the kubernetes version
   version = "1.13.6-gke.5"
 
