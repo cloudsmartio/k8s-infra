@@ -11,6 +11,11 @@ resource "google_container_cluster" "primary" {
   # The number of nodes to create in this cluster (not including the Kubernetes master).
   initial_node_count = 1
 
+  # Using node_locations to limit count of zones and hence count of nodes
+  node_locations = [
+    "us-central1-a"
+  ]
+
   master_auth {
     # Setting an empty username and password explicitly disables basic auth
     username = ""
