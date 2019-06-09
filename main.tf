@@ -29,7 +29,7 @@ resource "google_container_cluster" "primary" {
     }
 
     cloudrun_config {
-      disabled = false
+      disabled = true
     }
 
     http_load_balancing {
