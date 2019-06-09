@@ -42,7 +42,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   node_count = 1
 
   # pin the kubernetes version
-  version = "${google_container_cluster.primary.master_version}"
+  version = "1.13.6-gke.5"
 
   # Node management configuration. NB auto_upgrade must be false if specifying k8s version
   management {
