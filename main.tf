@@ -1,5 +1,7 @@
 # https://www.terraform.io/docs/providers/google/r/container_cluster.html
 resource "google_container_cluster" "primary" {
+  provider = "google-beta"
+
   name     = "my-gke-cluster"
   location = "us-central1"
 
@@ -19,6 +21,22 @@ resource "google_container_cluster" "primary" {
   # pin the kubernetes version
   min_master_version = "1.13.6-gke.5"
 
+  addons_config {
+
+    istio_config {
+      disabled = false
+      auth     = "AUTH_NONE"
+    }
+
+    cloudrun_config {
+      disabled = false
+    }
+
+    http_load_balancing {
+      disabled = false
+    }
+  }
+
   master_auth {
     # Setting an empty username and password explicitly disables basic auth
     username = ""
@@ -33,6 +51,8 @@ resource "google_container_cluster" "primary" {
 
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "primary_preemptible_nodes" {
+  provider = "google-beta"
+
   name = "my-node-pool"
 
   # The location (region or zone) in which the cluster resides
