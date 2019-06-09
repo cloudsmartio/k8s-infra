@@ -16,6 +16,9 @@ resource "google_container_cluster" "primary" {
     "us-central1-a"
   ]
 
+  # pin the kubernetes version
+  min_master_version = "1.13.6-gke.5"
+
   master_auth {
     # Setting an empty username and password explicitly disables basic auth
     username = ""
@@ -38,6 +41,17 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 
   node_count = 1
 
+  # pin the kubernetes version
+  version = "${google_container_cluster.primary.master_version}"
+
+  # Node management configuration. NB auto_upgrade must be false if specifying k8s version
+  management {
+    # Whether the nodes will be automatically repaired.
+    auto_repair = true
+
+    # Whether the nodes will be automatically upgraded.
+    auto_upgrade = false
+  }
   node_config {
     # https://cloud.google.com/blog/products/containers-kubernetes/cutting-costs-with-google-kubernetes-engine-using-the-cluster-autoscaler-and-preemptible-vms
     preemptible = true
